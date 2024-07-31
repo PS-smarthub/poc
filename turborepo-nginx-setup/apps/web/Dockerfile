@@ -3,9 +3,8 @@ FROM node:20-alpine AS builder
 WORKDIR /app
 COPY . .
 
-RUN npm i -g turbo
 # Only Take packages that are needed to compile this app
-RUN turbo prune --scope=web --docker
+RUN npx turbo prune --scope=web --docker
 
 # Add lockfile and package.json's of isolated subworkspace
 FROM node:20-alpine AS installer
@@ -21,7 +20,7 @@ WORKDIR /app
 COPY --from=installer /app/ .
 COPY --from=builder /app/out/full/ .
 COPY .gitignore .gitignore
-RUN npx turbo run build --filter=web --include-dependencies --no-deps
+RUN npx turbo run build --filter=web
 
 FROM node:20-alpine as runner
 RUN apk add --no-cache libc6-compat
