@@ -23,7 +23,7 @@ services:
   nginx:
     image: nginx:alpine
     container_name: nginx
-    ports:
+    ports:  
       - "81:80"
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
